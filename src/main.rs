@@ -51,14 +51,24 @@ struct Order {
     asset: String,
     price: f32,
     quantity:f32,
+}
+
+#[derive(Debug)]
+struct BuyOrder {
+    order: Order,
     order_type: OrderType,
+}
+
+#[derive(Debug)]
+struct SellOrder {
+    order: Order
 }
 
 
 #[derive(Debug)]
 struct OrderBook {
-    bids: Vec<Order>,
-    asks: Vec<Order>,
+    bids: Vec<BuyOrder>,
+    asks: Vec<SellOrder>,
     limit_orders: Vec<Order>,
     market_orders: Vec<Order>,
 }
@@ -73,17 +83,36 @@ fn main() {
 
     // put in a bid - bid assumes that an asset exists to be purchased, but
     // does not guarantee an immediate seller
-    order_book.bids.push(Order {
-        asset: "PLTR".to_string(),
-        price: 100.0,
-        quantity: 100.5,
+    order_book.bids.push(BuyOrder {
+        order: Order {
+            asset: "PLTR".to_string(),
+            price: 100.0,
+            quantity: 100.5,
+        },
         order_type: OrderType::LimitOrder
     });
 
     println!("Debug print: {:?}", order_book.bids);
 
-
     // put in a ask
+    order_book.asks.push(SellOrder {
+        order: Order {
+            asset: "PLTR".to_string(),
+            price: 120.0,
+            quantity: 50.0 ,
+        }
+    });
+
+    println!("Debug print: {:?}", order_book.asks);
+
+    // Start Matching
+    // Every ask should be ordered low -> high
+
+    
+
+
+    // figure out best way to keep asks sorted
+
 }
 
 
